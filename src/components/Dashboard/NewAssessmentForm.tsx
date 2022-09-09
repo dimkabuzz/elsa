@@ -9,6 +9,7 @@ import {
   StepLabel,
   Button,
   Typography,
+  LinearProgress,
 } from '@mui/material';
 
 import { Cancel } from '@mui/icons-material';
@@ -56,6 +57,10 @@ export default function NewAssessmentForm({ onDiscard }: Props) {
     setActiveStep(activeStep - 1);
   };
 
+  const resetHandler = () => {
+    setActiveStep(0);
+  };
+
   return (
     <Grid item xs={8}>
       <Paper
@@ -78,14 +83,81 @@ export default function NewAssessmentForm({ onDiscard }: Props) {
         <Fragment>
           {activeStep === steps.length ? (
             <Fragment>
-              <Typography variant="h5" gutterBottom>
-                Thank you for your order.
+              <Typography variant="h5" sx={{ mb: 4 }}>
+                Assessment Summary
               </Typography>
-              <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
-                confirmation, and will send you an update when your order has
-                shipped.
+              <Typography variant="caption" display="block" gutterBottom>
+                ID: PXT-27-1644800861722
               </Typography>
+              <Typography variant="body2" fontWeight={500}>
+                Amelia Trifan, 6 years and 5 months
+              </Typography>
+              <Box m={1}>
+                <Typography variant="caption" display="block">
+                  Presenting symptoms
+                </Typography>
+                <Typography variant="body2">Vomiting, Diarrhoea</Typography>
+              </Box>
+              <Box display={'flex'} mt={2} mb={4}>
+                <Typography variant="body2" fontWeight={500} width="50%">
+                  YOUR DECISION
+                </Typography>
+                <Typography variant="body2" fontWeight={500} width="50%">
+                  Gastroenteritis
+                </Typography>
+              </Box>
+              <Typography variant="body2" fontWeight={500}>
+                ELSA'S DIAGNOSIS
+              </Typography>
+              <Box
+                display="flex"
+                flexWrap="wrap"
+                rowGap={1}
+                ml={1}
+                mt={2}
+                mb={4}
+              >
+                <Typography variant="body2" fontWeight={500} width="50%">
+                  Gastroenteritis
+                </Typography>
+                <LinearProgress
+                  variant="determinate"
+                  value={45}
+                  sx={{ width: '50%' }}
+                />
+                <Typography variant="body2" fontWeight={500} width="50%">
+                  Gastritis
+                </Typography>
+                <LinearProgress
+                  variant="determinate"
+                  value={35}
+                  sx={{ width: '50%' }}
+                />
+                <Typography variant="body2" fontWeight={500} width="50%">
+                  Typhoid
+                </Typography>
+                <LinearProgress
+                  variant="determinate"
+                  value={25}
+                  sx={{ width: '50%' }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'end',
+                  gap: 1,
+                  height: '100%',
+                }}
+              >
+                <Button variant="outlined" onClick={onDiscard}>
+                  Go to Dashboard
+                </Button>
+                <Button variant="contained" onClick={resetHandler}>
+                  New Assessment
+                </Button>
+              </Box>
             </Fragment>
           ) : (
             <Fragment>
