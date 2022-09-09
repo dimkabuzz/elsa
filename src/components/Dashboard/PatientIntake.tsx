@@ -7,7 +7,6 @@ import {
   FormControlLabel,
   InputLabel,
   Select,
-  Checkbox,
   RadioGroup,
   Radio,
   MenuItem,

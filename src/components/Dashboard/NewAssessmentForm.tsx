@@ -14,8 +14,9 @@ import {
 import { Cancel } from '@mui/icons-material';
 
 import PatientIntake from './PatientIntake';
-import PaymentForm from './PaymentForm';
-import Review from './Review';
+import PresentingComplaints from './PresentingComplaints';
+import DietaryInformation from './DietaryInformation';
+import FinalAssessment from './FinalAssessment';
 import Title from './Title';
 
 const steps = [
@@ -30,11 +31,11 @@ const getStepContent = (step: number) => {
     case 0:
       return <PatientIntake />;
     case 1:
-      return <PaymentForm />;
+      return <PresentingComplaints />;
     case 2:
-      return <Review />;
+      return <DietaryInformation />;
     case 3:
-      return <Review />;
+      return <FinalAssessment />;
     default:
       throw new Error('Unknown step');
   }
@@ -44,7 +45,7 @@ type Props = {
   onDiscard: () => void;
 };
 
-export default function Checkout({ onDiscard }: Props) {
+export default function NewAssessmentForm({ onDiscard }: Props) {
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
@@ -89,31 +90,29 @@ export default function Checkout({ onDiscard }: Props) {
           ) : (
             <Fragment>
               {getStepContent(activeStep)}
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'end',
+                  gap: 1,
+                  mt: 8,
+                  height: '100%',
+                }}
+              >
                 <Button
                   onClick={onDiscard}
                   sx={{
-                    mt: 3,
-                    ml: 1,
-                    justifySelf: 'flex-start',
+                    mr: 'auto',
                   }}
                 >
                   <Cancel /> Discard
                 </Button>
                 {activeStep !== 0 && (
-                  <Button
-                    variant="outlined"
-                    onClick={handleBack}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
+                  <Button variant="outlined" onClick={handleBack}>
                     Back
                   </Button>
                 )}
-                <Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ mt: 3, ml: 1 }}
-                >
+                <Button variant="contained" onClick={handleNext}>
                   {activeStep === steps.length - 1
                     ? 'Complete Assessment'
                     : 'Next'}
