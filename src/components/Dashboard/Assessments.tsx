@@ -1,4 +1,6 @@
-import { Grid, Paper, Typography, Button } from '@mui/material';
+import PatientsChart from './PatientsChart';
+
+import { Grid, Paper, Button } from '@mui/material';
 import { Add } from '@mui/icons-material';
 
 type Props = {
@@ -18,18 +20,14 @@ export default function Assessments({ onAddNew }: Props) {
           height: '80vh',
         }}
       >
-        <Typography component="h2" variant="h6" sx={{ mb: 3 }}>
-          Hi, Dumitru Trifan
-        </Typography>
-        <Typography component="h3" variant="h6" color="primary">
-          Start New Assessment
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2 }}>
-          To start new assessment, please click on the button bellow
-        </Typography>
-        <Button variant="contained" onClick={onAddNew}>
+        <Button
+          variant="contained"
+          onClick={onAddNew}
+          sx={{ alignSelf: 'end', mb: 4 }}
+        >
           <Add /> New Assessment
         </Button>
+        <PatientsChart />
       </Paper>
     </Grid>
   );
