@@ -1,58 +1,22 @@
-import { useState, useEffect, useCallback } from 'react';
-import Papa, { ParseResult } from 'papaparse';
 import Plotly from 'plotly.js-cartesian-dist-min';
 import createPlotlyComponent from 'react-plotly.js/factory';
-import { RangeSelector } from 'plotly.js';
+import useReadCSV from '../../hooks/useReadCSV';
+import { selectorOptions } from './chartSelectorOptions';
 
 const Plot = createPlotlyComponent(Plotly);
 
+type PatientData = {
+  DATA: string;
+  N_PAZ: number;
+};
+
 export default function PatientsChart() {
-  type RowData = {
-    DATA: string;
-    N_PAZ: number;
-  };
-
-  type PatientData = {
-    data: RowData[];
-  };
-
-  const [analyzedValues, setAnalyzedValues] = useState<
-    PatientData | undefined
-  >();
-  const [totalValues, setTotalValues] = useState<PatientData | undefined>();
-
-  const getAnalyzedPatientsCSV = useCallback(() => {
-    Papa.parse('/data/analizzati.csv', {
-      header: true,
-      download: true,
-      skipEmptyLines: true,
-      delimiter: ',',
-      complete: (results: ParseResult<RowData>) => {
-        setAnalyzedValues(results);
-      },
-    });
-  }, []);
-
-  const getTotalPatientsCSV = useCallback(() => {
-    Papa.parse('/data/totali.csv', {
-      header: true,
-      download: true,
-      skipEmptyLines: true,
-      delimiter: ',',
-      complete: (results: ParseResult<RowData>) => {
-        setTotalValues(results);
-      },
-    });
-  }, []);
-
-  useEffect(() => {
-    getAnalyzedPatientsCSV();
-    getTotalPatientsCSV();
-  }, [getAnalyzedPatientsCSV, getTotalPatientsCSV]);
+  const analyzed = useReadCSV<PatientData>('/data/analizzati.csv');
+  const total = useReadCSV<PatientData>('/data/totali.csv');
 
   const patientsAnalyzed: Plotly.Data = {
-    x: analyzedValues?.data.map(row => row.DATA),
-    y: analyzedValues?.data.map(row => row.N_PAZ),
+    x: analyzed?.data?.map(row => row.DATA),
+    y: analyzed?.data?.map(row => row.N_PAZ),
     hovertemplate: `<b>Number of patients</b>:<br>%{y}<br><b>Date</b>:<br>%{x}</b>`,
     mode: 'lines',
     line: { shape: 'spline', smoothing: 1.3, color: '#045a8d' },
@@ -62,8 +26,8 @@ export default function PatientsChart() {
   };
 
   const patientsTotal: Plotly.Data = {
-    x: totalValues?.data.map(row => row.DATA),
-    y: totalValues?.data.map(row => row.N_PAZ),
+    x: total?.data?.map(row => row.DATA),
+    y: total?.data?.map(row => row.N_PAZ),
     hovertemplate: `<b>Number of patients</b>:<br>%{y}<br><b>Date</b>:<br>%{x}</b>`,
     mode: 'lines',
     line: { shape: 'spline', smoothing: 1.3, color: '#74a9cf' },
@@ -73,52 +37,6 @@ export default function PatientsChart() {
   };
 
   const data = [patientsAnalyzed, patientsTotal];
-
-  const selectorOptions: RangeSelector = {
-    buttons: [
-      {
-        step: 'day',
-        stepmode: 'backward',
-        count: 7,
-        label: 'Week',
-      },
-      {
-        step: 'month',
-        stepmode: 'backward',
-        count: 1,
-        label: 'Month',
-      },
-      {
-        step: 'month',
-        stepmode: 'backward',
-        count: 3,
-        label: 'Semester',
-      },
-      {
-        step: 'year',
-        stepmode: 'todate',
-        count: 1,
-        label: 'Year',
-      },
-      {
-        step: 'all',
-      },
-    ],
-    visible: true,
-    x: -5,
-    y: 20,
-    xanchor: 'left',
-    yanchor: 'bottom',
-    bgcolor: 'rgb(238, 238, 238)',
-    activecolor: 'rgb(212, 212, 212)',
-    borderwidth: 0,
-    bordercolor: 'rgb(68, 68, 68)',
-    font: {
-      family: 'Roboto',
-      size: 12,
-      color: 'rgb(42, 63, 95)',
-    },
-  };
 
   return (
     <Plot
