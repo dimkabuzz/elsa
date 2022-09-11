@@ -72,7 +72,7 @@ export default function NewAssessmentForm({ onDiscard }: Props) {
           overflow: 'auto',
         }}
       >
-        <Title>New Assessment</Title>
+        <Title>New Patient Assessment</Title>
         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
           {steps.map(label => (
             <Step key={label}>
